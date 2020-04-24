@@ -51,11 +51,11 @@ class TeleBot:
                 # That means this corresponds to a request
                 if self.brick.command == 'paper':
                     # The request was for relevant papers
-                    self.send_papers(message.text)
+                    self.send_papers(message.text, message.chat.id)
                 
                 elif self.brick.command == 'summary':
                     # Request was for summary
-                    self.send_summary(message.text)
+                    self.send_summary(message.text, message.chat.id)
             
             else:
                 if self.hacky_inference(message.text):
@@ -68,6 +68,29 @@ class TeleBot:
                 self.bot.polling()
             except:
                 time.sleep(15)
+    
+    def send_papers(self, abstract, chat_id):
+        '''
+        This papers send the papers to user
+        '''
+
+        paper_metadata = self.get_papers(abstract)
+
+        for data_item in paper_metadata:
+            self.bot.send_message(chat_id, data_item['link'])
+
+    def send_summary(self, content, chat_id):
+        '''
+        This paper sends the summary to the user
+        '''
+
+        summary = self.get_summary(content)
+
+        # Intimate the user about the incoming summary
+        self.bot.send_message(chat_id, "The text has been summarized below: ")
+
+        for sentence in summary:
+            self.bot.send_message(chat_id, sentence)
         
     def hacky_inference(self, text):
         '''
