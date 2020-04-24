@@ -33,6 +33,12 @@ class TeleBot:
             This function is used to test if bot is active
             '''
             self.bot.reply_to(message, 'Bot is active and listening')
+
+        while True:
+            try:
+                self.bot.polling()
+            except:
+                time.sleep(15)
     
     def get_papers(self, abstract):
         '''
