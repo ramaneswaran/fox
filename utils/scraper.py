@@ -1,3 +1,4 @@
+import logging
 from requests import get
 from bs4 import BeautifulSoup
 
@@ -10,6 +11,7 @@ class Scraper:
         '''
         Constructor class for Scraper
         '''
+        logging.info("Loading Scraper")
         self.base_url = 'https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q='
 
     def scrape(self, topic):

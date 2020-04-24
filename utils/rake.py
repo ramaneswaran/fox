@@ -1,4 +1,5 @@
 from multi_rake import Rake 
+import logging
 
 class Raker:
     '''
@@ -9,7 +10,7 @@ class Raker:
         '''
         This is is the constructor function for WordExtractor
         '''
-
+        logging.info("Loading Raker")
         self.rake = Rake()
 
     def get_keywords(self, text, number):

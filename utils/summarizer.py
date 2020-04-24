@@ -4,6 +4,7 @@ from sumy.summarizers.lsa import LsaSummarizer as Summarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 import math
+import logging
 
 class TextSummarizer:
     '''
@@ -14,7 +15,7 @@ class TextSummarizer:
         '''
         Constructor class of TextSummarizer
         '''
-
+        logging.info("Loading summarizer")
         # The language being processed
         language = 'english'
 
