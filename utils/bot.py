@@ -60,7 +60,7 @@ class TeleBot:
             else:
                 if self.hacky_inference(message.text):
                     # The bot has been called
-                    seld.send_greet()
+                    seld.send_greet(message.chat.id)
                 
         
         while True:
@@ -68,6 +68,16 @@ class TeleBot:
                 self.bot.polling()
             except:
                 time.sleep(15)
+        
+    def send_greet(self, chat_id):
+        '''
+        This function greets and presents options
+        '''
+
+        text = "**Hey! Its Athena** 🕵️‍♀️ \n  Please click the service you wish to request "
+
+        self.bot.send_message(chat_id, text, reply_markup=self.menu_markup(),
+                             parse_mode="Markdown")
     
     def send_papers(self, abstract, chat_id):
         '''
