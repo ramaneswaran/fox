@@ -33,6 +33,27 @@ class TeleBot:
         This function activates the bot and listens to messages
         '''
 
+        @self.bot.callback_query_handler(func=lambda call: True)
+        def callback_query(call):
+            '''
+            This function is the callback query handler
+            '''
+
+            if call.data == 'paper':
+                # Track the command
+                self.brick = self.get_brick('paper')
+
+                # Intimate the user
+                self.bot.send_message(call.message.chat.id, "Please enter the paper abtract below")
+
+            elif call.data == 'summary':
+                # Track the command
+                self.brick = self.get_brick('summary')
+
+                # Intimate the user
+                self.bot.send_message(call.message.chat.id, "Please enter the text to be summarized")
+
+                
         @self.bot.message_handler(commands=['start'])
         def send_welcome(message):
             '''
