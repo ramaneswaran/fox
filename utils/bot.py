@@ -1,6 +1,7 @@
 import os
 import time
 import telebot
+from fuzzywuzzy import fuzz
 
 # Import utility classes
 from utils.scraper import Scraper
@@ -25,6 +26,8 @@ class TeleBot:
 
         self.text_summarizer = TextSummarizer()
 
+        self.brick = None
+
     def activate(self):
         '''
         This function activates the bot and listens to messages
@@ -36,12 +39,50 @@ class TeleBot:
             This function is used to test if bot is active
             '''
             self.bot.reply_to(message, 'Bot is active and listening')
+
+        @self.bot.message_handler(func = lambda message : True)
+        def track_messages(message):
+            '''
+            This function tracks user messages
+            '''
+
+            if self.brick is not None:
+
+                # That means this corresponds to a request
+                if self.brick.command == 'paper':
+                    # The request was for relevant papers
+                    self.send_papers(message.text)
+                
+                elif self.brick.command == 'summary':
+                    # Request was for summary
+                    self.send_summary(message.text)
+            
+            else:
+                if self.hacky_inference(message.text):
+                    # The bot has been called
+                    seld.send_greet()
+                
         
         while True:
             try:
                 self.bot.polling()
             except:
                 time.sleep(15)
+        
+    def hacky_inference(self, text):
+        '''
+        This function checks if bot is called
+        '''
+
+        call_list = ['hey','hey athena','athena','help please','help']
+
+        text = text.lower()
+
+        for call in call_list:
+            if fuzz.ratio(call, text) > 90:
+                return True
+        
+        return False
     
     def menu_markup(self):
         '''
