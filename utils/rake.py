@@ -1,6 +1,6 @@
 from multi_rake import Rake 
 
-class WordExtractor:
+class Raker:
     '''
     This is the WordExtractor class
     '''
