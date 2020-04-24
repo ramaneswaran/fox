@@ -53,13 +53,13 @@ class TeleBot:
                 # Intimate the user
                 self.bot.send_message(call.message.chat.id, "Please enter the text to be summarized")
 
-                
+
         @self.bot.message_handler(commands=['start'])
         def send_welcome(message):
             '''
             This function is used to test if bot is active
             '''
-            self.bot.reply_to(message, 'Bot is active and listening')
+            self.bot.reply_to(message, 'Athena is active and listening')
 
         @self.bot.message_handler(func = lambda message : True)
         def track_messages(message):
@@ -100,6 +100,7 @@ class TeleBot:
         self.bot.send_message(chat_id, text, reply_markup=self.menu_markup(),
                              parse_mode="Markdown")
     
+    
     def send_papers(self, abstract, chat_id):
         '''
         This papers send the papers to user
@@ -109,6 +110,9 @@ class TeleBot:
 
         for data_item in paper_metadata:
             self.bot.send_message(chat_id, data_item['link'])
+        
+        # Clear the brick
+        self.brick = None
 
     def send_summary(self, content, chat_id):
         '''
@@ -122,6 +126,9 @@ class TeleBot:
 
         for sentence in summary:
             self.bot.send_message(chat_id, sentence)
+        
+        # Clear the brick
+        self.brick = None
         
     def hacky_inference(self, text):
         '''
