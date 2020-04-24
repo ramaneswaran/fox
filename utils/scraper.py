@@ -1,3 +1,4 @@
+import re
 import logging
 from requests import get
 from bs4 import BeautifulSoup
@@ -40,6 +41,9 @@ class Scraper:
         abstracts = [abstract.get_text() for abstract in soup.find_all('div', class_='gs_rs')]
         result = []
         for i in range(len(titles)):
+
+            # Clean the abstract
+            re.sub('[.]', "", abstracts[i])
             result.append(
                 {
                     'title':titles[i],
