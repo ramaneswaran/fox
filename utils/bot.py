@@ -36,12 +36,25 @@ class TeleBot:
             This function is used to test if bot is active
             '''
             self.bot.reply_to(message, 'Bot is active and listening')
-
+        
         while True:
             try:
                 self.bot.polling()
             except:
                 time.sleep(15)
+    
+    def menu_markup(self):
+        '''
+        This function generates a markup
+        '''
+
+        markup = types.InlineKeyboardMarkup()
+        markup.row_width = 1
+        markup.add(types.InlineKeyboardButton("Get Papers", callback_data="paper"),
+                    types.InlineKeyboardButton("Get Summary", callback_data="summary"))
+        
+        return markup
+
     
     def get_brick(self, command):
         '''
