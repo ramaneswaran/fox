@@ -11,8 +11,8 @@ Continue reading to find out how <b>Fox</b> , an <b>AI powered telegram bot</b> 
 
 ### Get relevant papers to your research
 
-So you found out a good paper that might help in your research? And now you want to checkout similar papers?\n
-Let Fox do some pre eliminary work for you. Pass the abstract of your paper to this bot and it will \
+So you found out a good paper that might help in your research? And now you want to checkout similar papers?\
+Let Fox do some pre eliminary work for you. Pass the abstract of your paper to this bot and it will 
 return a list of most relevant research paper 
 
 Fox uses intelligent keyword extraction and mines research papers from google scholar using these keywords\
