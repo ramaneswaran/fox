@@ -20,9 +20,9 @@ class TextSummarizer:
         language = 'english'
 
         # Loading the summarizer
-        stemmer = Stemmer(self.language)
+        stemmer = Stemmer(language)
 
-        self.summarizer Summarizer(stemmer)
+        self.summarizer =  Summarizer(stemmer)
         self.summarizer.stop_words = get_stop_words(language)
 
     def summary(self, content):

@@ -1,6 +1,8 @@
 import os
 import time
+import logging
 import telebot
+from telebot import types
 from fuzzywuzzy import fuzz
 
 # Import utility classes
@@ -27,6 +29,8 @@ class TeleBot:
         self.text_summarizer = TextSummarizer()
 
         self.brick = None
+
+        self.menu = self.menu_markup()
 
     def activate(self):
         '''
@@ -66,22 +70,23 @@ class TeleBot:
             '''
             This function tracks user messages
             '''
-
+            
             if self.brick is not None:
 
                 # That means this corresponds to a request
-                if self.brick.command == 'paper':
+                if self.brick['command'] == 'paper':
                     # The request was for relevant papers
+                    logging.info("Here for papers")
                     self.send_papers(message.text, message.chat.id)
                 
-                elif self.brick.command == 'summary':
+                elif self.brick['command'] == 'summary':
                     # Request was for summary
                     self.send_summary(message.text, message.chat.id)
             
             else:
                 if self.hacky_inference(message.text):
                     # The bot has been called
-                    seld.send_greet(message.chat.id)
+                    self.send_greet(message.chat.id)
                 
         
         while True:
@@ -94,10 +99,10 @@ class TeleBot:
         '''
         This function greets and presents options
         '''
+        
+        text = "*Hey! Its Athena* 🕵️‍♀️ \nPlease click the service you wish to request "
 
-        text = "**Hey! Its Athena** 🕵️‍♀️ \n  Please click the service you wish to request "
-
-        self.bot.send_message(chat_id, text, reply_markup=self.menu_markup(),
+        self.bot.send_message(chat_id, text, reply_markup=self.menu,
                              parse_mode="Markdown")
     
     
@@ -108,8 +113,10 @@ class TeleBot:
 
         paper_metadata = self.get_papers(abstract)
 
-        for data_item in paper_metadata:
-            self.bot.send_message(chat_id, data_item['link'])
+        for item in paper_metadata:
+            text = "*"+item['title']+"*\n"
+            text += "[Click here to visit paper]("+item['link']+")"
+            self.bot.send_message(chat_id, text, parse_mode="Markdown")
         
         # Clear the brick
         self.brick = None
@@ -138,9 +145,12 @@ class TeleBot:
         call_list = ['hey','hey athena','athena','help please','help']
 
         text = text.lower()
+        
 
         for call in call_list:
-            if fuzz.ratio(call, text) > 90:
+            ratio = fuzz.ratio(call, text)
+            
+            if ratio > 90:
                 return True
         
         return False
@@ -177,11 +187,13 @@ class TeleBot:
 
         # Get a list of keywords
         keywords = self.raker.get_keywords(abstract, 4)
+        logging.info("Keywords generated")
 
         # Form a topic
-        topic = keywords.join(' ')
-
+        topic = ' '.join(keywords)
+        
         paper_metadata = self.scraper.scrape(topic)
+        logging.info("Papers scraped")
 
         return paper_metadata
 
@@ -193,3 +205,5 @@ class TeleBot:
         summary = self.text_summarizer.summary(content)
 
         return summary
+
+    

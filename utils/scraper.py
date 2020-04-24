@@ -18,8 +18,10 @@ class Scraper:
         '''
         This function scrapes the research papers
         '''
-        response = get(base_url+topic)
-
+        response = get(self.base_url+topic)
+        
+        if response.status_code == 200:
+            logging.info("Response recieved")
         soup = BeautifulSoup(response.text,'html.parser')
             
         # Titles of the papers
