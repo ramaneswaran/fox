@@ -43,6 +43,18 @@ class TeleBot:
             except:
                 time.sleep(15)
     
+    def get_brick(self, command):
+        '''
+        Returns a brick for a command request
+        '''
+
+        brick = {
+            'command': command,
+            'complete': False
+        }
+
+        return brick
+        
     def get_papers(self, abstract):
         '''
         This paper returns relevant research papers
