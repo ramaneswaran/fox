@@ -5,6 +5,7 @@ import telebot
 # Import utility classes
 from utils.scraper import Scraper
 from utils.rake import Raker
+from utils.summarizer import TextSummarizer
 
 class TeleBot:
     '''
@@ -21,6 +22,8 @@ class TeleBot:
         self.scraper = Scraper()
 
         self.raker = Raker()
+
+        self.text_summarizer = TextSummarizer()
 
     def activate(self):
         '''
@@ -54,3 +57,12 @@ class TeleBot:
         paper_metadata = self.scraper.scrape(topic)
 
         return paper_metadata
+
+    def get_summary(self, content):
+        '''
+        This paper returns summary
+        '''
+
+        summary = self.text_summarizer.summary(content)
+
+        return summary

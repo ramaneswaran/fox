@@ -24,7 +24,7 @@ class TextSummarizer:
         self.summarizer Summarizer(stemmer)
         self.summarizer.stop_words = get_stop_words(language)
 
-    def get_summary(self, content):
+    def summary(self, content):
         '''
         This function summarizes text
         '''
