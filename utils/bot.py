@@ -30,6 +30,8 @@ class TeleBot:
 
         self.brick = None
 
+        self.paper_metadata = None
+
         self.menu = self.menu_markup()
 
     def activate(self):
@@ -112,13 +114,20 @@ class TeleBot:
 
         paper_metadata = self.get_papers(abstract)
 
-        for item in paper_metadata:
-            # text = "*"+item['title']+"*\n"
-            # text += "[Click here to visit paper]("+item['link']+")"
-            text = "<b>"+item['title']+"</b> \n"
-            text += "<a href=\""+item['link']+"\" > Click here to view paper</a>"
-            self.bot.send_message(chat_id, text, disable_web_page_preview=True, parse_mode="HTML")
+        # Store this paper metadata\
+        self.paper_metadata = None
+
+        # for item in paper_metadata:
+        #     # text = "*"+item['title']+"*\n"
+        #     # text += "[Click here to visit paper]("+item['link']+")"
+        #     text = "<b>"+item['title']+"</b> \n"
+        #     text += "<a href=\""+item['link']+"\" > Click here to view paper</a>"
+        #     self.bot.send_message(chat_id, text, disable_web_page_preview=True, parse_mode="HTML")
         
+        for index,item in enumerate(paper_metadata):
+            text = "<b>"+item['title']+"</b> \n"
+            self.bot.send_message(chat_id, text, disable_web_page_preview=True, reply_markup=self.paper_markup(index), parse_mode="HTML")
+
         # Clear the brick
         self.brick = None
 
@@ -206,4 +215,16 @@ class TeleBot:
 
         return summary
 
-    
+    def paper_markup(self, index):
+        '''
+        This function generates a markup
+        '''
+
+        markup = types.InlineKeyboardMarkup()
+        markup.row_width = 3
+        markup.add(types.InlineKeyboardButton("Summary", callback_data="summary-"+str(index)),
+                    types.InlineKeyboardButton("Download", callback_data="dl-"+str(index)),
+                    types.InlineKeyboardButton("Authors", callback_data="authors-"+str(index)),
+                    )
+        
+        return markup
