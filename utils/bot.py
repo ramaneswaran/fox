@@ -104,8 +104,7 @@ class TeleBot:
 
         self.bot.send_message(chat_id, text, reply_markup=self.menu,
                              parse_mode="Markdown")
-    
-    
+     
     def send_papers(self, abstract, chat_id):
         '''
         This papers send the papers to user
@@ -166,8 +165,7 @@ class TeleBot:
                     types.InlineKeyboardButton("Get Summary", callback_data="summary"))
         
         return markup
-
-    
+   
     def get_brick(self, command):
         '''
         Returns a brick for a command request
@@ -201,7 +199,7 @@ class TeleBot:
         '''
         This paper returns summary
         '''
-
+        logging.info("Getting summary")
         summary = self.text_summarizer.summary(content)
 
         return summary

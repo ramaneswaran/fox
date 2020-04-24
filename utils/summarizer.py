@@ -29,16 +29,19 @@ class TextSummarizer:
         '''
         This function summarizes text
         '''
-        parser = PlaintextParser.from_string(content, Tokenizer(LANGUAGE))
-
-        sent_count = 0
-        for sentence in content.split('.'):
-            sent_count+=1
-        
-        
-        summary = summarizer(parser.document, math.ceil(sent_count*0.3))
-
-        return summary
+        try:
+            parser = PlaintextParser.from_string(content, Tokenizer('english'))
+            logging.info("Parsed text")
+            sent_count = 0
+            for sentence in content.split('.'):
+                sent_count+=1
+            
+            
+            summary = self.summarizer(parser.document, math.ceil(sent_count*0.3))
+        except Exception as error:
+            logging.info(error)
+        finally:
+            return summary if summary else None
 
 
 
