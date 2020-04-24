@@ -113,9 +113,11 @@ class TeleBot:
         paper_metadata = self.get_papers(abstract)
 
         for item in paper_metadata:
-            text = "*"+item['title']+"*\n"
-            text += "[Click here to visit paper]("+item['link']+")"
-            self.bot.send_message(chat_id, text, parse_mode="Markdown")
+            # text = "*"+item['title']+"*\n"
+            # text += "[Click here to visit paper]("+item['link']+")"
+            text = "<b>"+item['title']+"</b> \n"
+            text += "<a href=\""+item['link']+"\" > Click here to view paper</a>"
+            self.bot.send_message(chat_id, text, disable_web_page_preview=True, parse_mode="HTML")
         
         # Clear the brick
         self.brick = None
