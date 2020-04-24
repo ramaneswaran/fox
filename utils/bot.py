@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import logging
 import telebot
@@ -59,7 +60,17 @@ class TeleBot:
                 # Intimate the user
                 self.bot.send_message(call.message.chat.id, "Please enter the text to be summarized")
 
+            elif re.search("^s-.$", call.data):
+                # Get index
+                index = text.split("-")[1]
 
+                # Get summary
+                if self.paper_metadata is None:
+                    self.bot.send_message(call.message.chat.id, "Session expired, please start again")
+                else:
+                    self.send_summary(self.paper_metadata[index]['abstract'], call.message.chat.id)
+                
+                
         @self.bot.message_handler(commands=['start'])
         def send_welcome(message):
             '''
@@ -222,9 +233,9 @@ class TeleBot:
 
         markup = types.InlineKeyboardMarkup()
         markup.row_width = 3
-        markup.add(types.InlineKeyboardButton("Summary", callback_data="summary-"+str(index)),
-                    types.InlineKeyboardButton("Download", callback_data="dl-"+str(index)),
-                    types.InlineKeyboardButton("Authors", callback_data="authors-"+str(index)),
+        markup.add(types.InlineKeyboardButton("Summary", callback_data="s-"+str(index)),
+                    types.InlineKeyboardButton("Download", callback_data="d-"+str(index)),
+                    types.InlineKeyboardButton("Authors", callback_data="a-"+str(index)),
                     )
         
         return markup
