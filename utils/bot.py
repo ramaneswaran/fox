@@ -59,17 +59,40 @@ class TeleBot:
 
                 # Intimate the user
                 self.bot.send_message(call.message.chat.id, "Please enter the text to be summarized")
-
+            
             elif re.search("^s-.$", call.data):
                 # Get index
-                index = text.split("-")[1]
-
+                
+                index = int((call.data).split("-")[1])
+                
                 # Get summary
                 if self.paper_metadata is None:
                     self.bot.send_message(call.message.chat.id, "Session expired, please start again")
                 else:
                     self.send_summary(self.paper_metadata[index]['abstract'], call.message.chat.id)
+
+            elif re.search("^a-.$", call.data):
+                # Get index
                 
+                index = int((call.data).split("-")[1])
+                
+                # Get summary
+                if self.paper_metadata is None:
+                    self.bot.send_message(call.message.chat.id, "Session expired, please start again")
+                else:
+                    text = "The authors are " + self.paper_metadata[index]['authors'] 
+                    self.bot.send_message(call.message.chat.id, text)   
+            
+            elif re.search("^e-.$", call.data):
+                # Get index
+                
+                index = int((call.data).split("-")[1])
+                
+                # Get summary
+                if self.paper_metadata is None:
+                    self.bot.send_message(call.message.chat.id, "Session expired, please start again")
+                else:
+                    self.bot.send_message(call.message.chat.id, self.paper_metadata[index]['link'])
                 
         @self.bot.message_handler(commands=['start'])
         def send_welcome(message):
@@ -126,7 +149,7 @@ class TeleBot:
         paper_metadata = self.get_papers(abstract)
 
         # Store this paper metadata\
-        self.paper_metadata = None
+        self.paper_metadata = paper_metadata
 
         # for item in paper_metadata:
         #     # text = "*"+item['title']+"*\n"
@@ -136,6 +159,8 @@ class TeleBot:
         #     self.bot.send_message(chat_id, text, disable_web_page_preview=True, parse_mode="HTML")
         
         for index,item in enumerate(paper_metadata):
+            if index == 2:
+                break
             text = "<b>"+item['title']+"</b> \n"
             self.bot.send_message(chat_id, text, disable_web_page_preview=True, reply_markup=self.paper_markup(index), parse_mode="HTML")
 
@@ -234,7 +259,7 @@ class TeleBot:
         markup = types.InlineKeyboardMarkup()
         markup.row_width = 3
         markup.add(types.InlineKeyboardButton("Summary", callback_data="s-"+str(index)),
-                    types.InlineKeyboardButton("Download", callback_data="d-"+str(index)),
+                    types.InlineKeyboardButton("Download", callback_data="e-"+str(index)),
                     types.InlineKeyboardButton("Authors", callback_data="a-"+str(index)),
                     )
         
