@@ -125,6 +125,28 @@ class TeleBot:
                     self.send_greet(message.chat.id)
                 
         
+        @self.bot.message_handler(content_types=['document'])
+        def handle_docs(message):
+            '''
+            This function handles messages
+            '''
+            
+            try:
+                file_info = self.bot.get_file(message.document.file_id)
+                downloaded_file = self.bot.download_file(file_info.file_path)
+
+                with open('./tmp/temp.pdf', 'wb') as new_file:
+                    new_file.write(downloaded_file)
+
+            except Exception as error:
+                logging.info(error)
+
+            # Now pdf file is saved
+
+            
+            self.bot.send_message(message.chat.id, "This did something")
+
+
         while True:
             try:
                 self.bot.polling()
