@@ -1,5 +1,7 @@
 import pytesseract
 import cv2
+import logging
+
 
 class Engine:
     '''
@@ -9,8 +11,8 @@ class Engine:
         '''
         Constructor class for OCR
         '''
+        logging.info("Intitializing OCR Engine")
 
-        pass
 
     def get_text(self, path):
         '''

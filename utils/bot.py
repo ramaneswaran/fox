@@ -10,6 +10,9 @@ from fuzzywuzzy import fuzz
 from utils.scraper import Scraper
 from utils.rake import Raker
 from utils.summarizer import TextSummarizer
+from utils.engine import Engine
+from utils.doc_manip import Manip
+
 
 class TeleBot:
     '''
@@ -28,6 +31,10 @@ class TeleBot:
         self.raker = Raker()
 
         self.text_summarizer = TextSummarizer()
+
+        self.engine = Engine()
+
+        self.doc_manip = Manip()
 
         self.brick = None
 
@@ -142,8 +149,8 @@ class TeleBot:
                 logging.info(error)
 
             # Now pdf file is saved
+            # 
 
-            
             self.bot.send_message(message.chat.id, "This did something")
 
 

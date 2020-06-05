@@ -1,11 +1,13 @@
 from pdf2image import convert_from_path
+import logging
+
 
 class Manip:
     '''
     Class to deals with docs
     '''
     def __init__(self):
-        pass
+        logging.info("Initializing doc manipulator")
 
     def save_as_image(self, path):
         '''
