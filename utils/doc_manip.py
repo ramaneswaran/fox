@@ -16,6 +16,6 @@ class Manip:
 
         image = page[0]
 
-        image.save('./data/tmp/img.jpg')
+        image.save('./tmp/img.jpg')
 
-        return './data/tmp/img.jpg'
+        return './tmp/img.jpg'
