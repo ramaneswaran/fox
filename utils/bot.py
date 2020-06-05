@@ -3,8 +3,10 @@ import re
 import time
 import logging
 import telebot
+import spacy
 from telebot import types
 from fuzzywuzzy import fuzz
+import string
 
 # Import utility classes
 from utils.scraper import Scraper
@@ -34,7 +36,9 @@ class TeleBot:
 
         self.engine = Engine()
 
-        self.doc_manip = Manip()
+        self.manip = Manip()
+
+        self.nlp = spacy.load('en_core_web_sm')
 
         self.brick = None
 
@@ -145,20 +149,43 @@ class TeleBot:
                 with open('./tmp/temp.pdf', 'wb') as new_file:
                     new_file.write(downloaded_file)
 
+                path  = self.manip.save_as_image('./tmp/temp.pdf')
+
+                self.bot.send_message(message.chat.id, "I am processing your file, brb with results!!")
+
+                text = self.engine.get_text(path)
+
+                doc = self.nlp(text)
+
+                clean_text = self.clean_text(doc)
+
+                self.send_papers(clean_text, message.chat.id)
+
+
+
+
             except Exception as error:
                 logging.info(error)
 
             # Now pdf file is saved
-            # 
-
-            self.bot.send_message(message.chat.id, "This did something")
-
+            # Now process document
 
         while True:
             try:
                 self.bot.polling()
             except:
                 time.sleep(15)
+
+
+    def clean_text(self, doc):
+        '''
+        This function cleans text
+        '''
+
+        tokens = [token.text for token in doc]
+        tokens = [token for token in tokens if token not in string.punctuation]
+        return ' '.join(tokens[:300])
+
         
     def send_greet(self, chat_id):
         '''

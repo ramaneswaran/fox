@@ -16,7 +16,7 @@ class Manip:
 
         pages = convert_from_path(path)
 
-        image = page[0]
+        image = pages[0]
 
         image.save('./tmp/img.jpg')
 
