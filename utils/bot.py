@@ -14,7 +14,8 @@ from utils.rake import Raker
 from utils.summarizer import TextSummarizer
 from utils.engine import Engine
 from utils.doc_manip import Manip
-
+from utils.spacy import SpacyModel
+from utils.textrank import TextRank
 
 class TeleBot:
     '''
@@ -39,6 +40,10 @@ class TeleBot:
         self.manip = Manip()
 
         self.nlp = spacy.load('en_core_web_sm')
+
+        self.spacy_model = SpacyModel(self.nlp)
+
+        self.text_rank = TextRank(self.spacy_model)
 
         self.brick = None
 
